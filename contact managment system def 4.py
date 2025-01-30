@@ -5,12 +5,18 @@ contacts = {}
 validate_phone = {} #temporary tell i pair with def 1.
 validate_email = {}#temporary tell i pair with def 2.
 
-def add_contact():
-    name = input("Enter name: ")
-    phone = input("Enter phone number: ")
-    while not validate_phone(phone):
-        print("Invalid phone number. Please enter a valid phone number.")
+def add_contact(phone=None):
+    
+    if not phone:
         phone = input("Enter phone number: ")
+
+    name = input("Enter name: ")
+
+    while True:
+        phone = input("Enter phone number: ")
+        if validate_phone(phone):
+            break
+        print("Invalid phone number. Please enter a valid phone number.")
 
     email = input("Enter email address: ")
     while not validate_email(email):
@@ -26,4 +32,4 @@ def add_contact():
         'address': address,
         'notes': notes
     }
-    print("Contact added successfully!")
+    print(f"Contact for {name} added successfully!")
