@@ -1,7 +1,22 @@
-import re
-import os
 
-def validate_phone(phone):
-    # Allow optional spaces, dashes, or parentheses in the phone number.
-    # The phone number should start with an optional '+' followed by digits and allow spaces/dashes between numbers.
-    return re.match(r"^\+?\(?\d{1,3}\)?[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}$", phone) is not None
+
+import phonenumbers
+from phonenumbers import NumberParseException
+
+def validate_phone(phone, default_country='US'):
+    try:
+        # Parse the phone number with the provided country code
+        parsed_phone = phonenumbers.parse(phone, default_country)
+
+        # Validate the phone number
+        if not phonenumbers.is_valid_number(parsed_phone):
+            print("Invalid phone number format. Please enter a valid phone number.")
+            return None
+
+        # Format the phone number into international format
+        formatted_phone = phonenumbers.format_number(parsed_phone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+
+        return formatted_phone
+    except NumberParseException as e:
+        print(f"Error parsing phone number: {e}. Please enter a valid phone number.")
+        return None
